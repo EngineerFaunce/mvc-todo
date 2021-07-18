@@ -1,0 +1,43 @@
+﻿@model MvcTodo.Models.TodoModel
+
+@{
+    ViewData["Title"] = "Todo List";
+}
+
+<h1>Todo List</h1>
+
+<div class="pt-3 overflow-auto shadow bg-light border" style="width: 500px; height: 700px" id="todo-list">
+    <form asp-action="Create" class="mx-3 mb-2">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="input-group">
+            <input asp-for="Title" class="form-control" placeholder="Add a new todo item..." />
+            <span asp-validation-for="Title" class="text-danger"></span>
+            <button type="submit" value="" class="btn btn-outline-primary" id="btn-addon">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+    </form>
+
+    @foreach (var item in Model.items) {
+        <div class="mx-3 mb-3 d-flex justify-content-between align-items-center bg-body border rounded" style="height: 80px">
+            <div class="d-flex container align-items-center">
+                <form asp-controller="TodoItems" asp-action="ToggleIsComplete" asp-route-id="@item.Id">
+                    <input asp-for=@item.isComplete onchange="this.form.submit()" class="form-check-input rounded-circle" type="checkbox" style="width: 30px; height: 30px;" />
+                </form>
+                <h5 class="mb-0 ps-2">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </h5>
+            </div>
+            <div class="me-2 d-flex justify-content-end">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary me-2">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+
